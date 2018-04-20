@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+android:background="@color/colorPrimary"
+    android:orientation="horizontal">
+    <Button
+        android:id="@+id/menuButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:background="@android:color/transparent"  />
+
+    <TextView
+        android:id="@+id/action_bar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:layout_marginRight="50dp"
+
+        android:layout_gravity="center"
+        />
+
+
+    <Button
+        android:id="@+id/navButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="-40dp"
+        android:background="@android:color/transparent"  />
+
+
+    <Button
+        android:id="@+id/sortButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="-80dp"
+        android:background="@android:color/transparent"  />
+</LinearLayout>
