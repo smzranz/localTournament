@@ -93,7 +93,10 @@ import java.util.List;
                             viewHolder2.textTitle.setText("Requests");
                             viewHolder2.textSubTitle.setText("");
                             break;
-
+                        case 6:
+                            viewHolder2.textTitle.setText("LogOut");
+                            viewHolder2.textSubTitle.setText("");
+                            break;
 
                     }
 
@@ -106,7 +109,7 @@ import java.util.List;
 
         @Override
         public int getItemCount() {
-            return 6;
+            return 7;
         }
 
 
