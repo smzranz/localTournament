@@ -56,6 +56,11 @@ public class AddTournamentActivity extends AppCompatActivity {
     //firebase objects
     private StorageReference storageReference;
     private DatabaseReference mDatabase;
+
+    private DatabaseReference mMessagesReference;
+
+
+
     Spinner spinner;
     Spinner DistrictSpinner;
 
@@ -91,6 +96,7 @@ public class AddTournamentActivity extends AppCompatActivity {
 
 
     DatabaseReference databaseGames;
+    DatabaseReference users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +107,7 @@ public class AddTournamentActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 //        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
 
-
+        mMessagesReference = FirebaseDatabase.getInstance().getReference("messages");
         titleTextField = (EditText) findViewById(R.id.titleTextEdit);
         placeTextField = (EditText) findViewById(R.id.placeTextEdit);
         dateTextField = (EditText) findViewById(R.id.dateTextEdit);
@@ -188,6 +194,7 @@ public class AddTournamentActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_UPLOADS);
         databaseGames = FirebaseDatabase.getInstance().getReference("Games");
+        users = FirebaseDatabase.getInstance().getReference("Users");
 
     }
 
@@ -250,6 +257,7 @@ public class AddTournamentActivity extends AppCompatActivity {
 
                 databaseGames.child(uploadId).setValue(artist);
 
+                    users.child(userID).child("My Tornaments").child(uploadId).setValue(uploadId);
                 Toast.makeText(getApplicationContext(), "Data Added Succesfully", Toast.LENGTH_LONG).show();
                 goBack();
 
@@ -332,7 +340,9 @@ public class AddTournamentActivity extends AppCompatActivity {
 
 
                             databaseGames.child(uploadId).setValue(artist);
-
+                            Message message = new Message(title+":"+gameSelected+" in " + place +"("+district+")"+ " on " + date, gameSelected, null);
+                        mMessagesReference.push().setValue(message);
+                            users.child(userID).child("My Tornaments").child(uploadId).setValue(uploadId);
                             Toast.makeText(getApplicationContext(), "Data Added Succesfully", Toast.LENGTH_LONG).show();
                             goBack();
 

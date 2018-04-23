@@ -208,7 +208,7 @@ public class SignUpActivity extends AppCompatActivity {
                 // Save verification ID and resending token so we can use them later
                  mVerificationId = verificationId;
                   mResendToken = token;
-showOTPAlert();
+        showOTPAlert();
                 // [START_EXCLUDE]
                 // Update UI
                 // updateUI(STATE_CODE_SENT);

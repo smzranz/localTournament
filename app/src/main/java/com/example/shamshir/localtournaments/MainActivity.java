@@ -547,10 +547,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.my_tournaments) {
-            Toast.makeText(MainActivity.this,
-                    "Invalid Password", Toast.LENGTH_LONG).show();
+            myTournaments();
+
 
         } else if (id == R.id.add_tournaments) {
+
+
+
 
             addTournamenetPressed();
 
@@ -572,6 +575,20 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+    private  void myTournaments(){
+
+        Intent intent = new Intent(MainActivity.this, MyTournaments.class);
+        Gson gson = new Gson();
+
+        String json = gson.toJson(productList);
+        Bundle basket = new Bundle();
+        basket.putString("allProduct", json);
+
+        intent.putExtras(basket);
+        startActivity(intent);
+
+    }
     private void addTournamenetPressed() {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);

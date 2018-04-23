@@ -43,10 +43,11 @@ public class DetailView extends AppCompatActivity {
     //the recyclerview
     RecyclerView recyclerView;
     detailViewAdapter adapter;
-
+    ProfileDetails profileDetails;
     Button requsetBtn;
     Button navButton;
 
+    DatabaseReference databaseProfile;
     DatabaseReference databaseGames;
 
     String tournamentTitle ;
@@ -80,8 +81,8 @@ public class DetailView extends AppCompatActivity {
         String totalTeams = json.getTotalTeams();
         String moreDetails = json.getMoreInfo();
         String district = json.getDistrict();
-        String imageUrl = json.getImage();
-        String cliendId = json.getClientID();
+         imageUrl = json.getImage();
+         cliendId = json.getClientID();
 
 
         Log.i(tournamentTitle,"tournamentTitle");
@@ -106,11 +107,14 @@ public class DetailView extends AppCompatActivity {
 
             }
         });
+
         recyclerView = (RecyclerView) findViewById(R.id.detailRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         productList = new ArrayList<>();
+
         databaseGames = FirebaseDatabase.getInstance().getReference("Games");
+        databaseProfile = FirebaseDatabase.getInstance().getReference("Users");
 
         requsetBtn = (Button) findViewById(R.id.requestBtn);
 
@@ -118,48 +122,48 @@ public class DetailView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+
+                boolean userLogin = pref.getBoolean("userLogged", false);
+
+                if (userLogin) {
+                     userID = pref.getString("idName","");
+
+                    new MaterialDialog.Builder(DetailView.this)
+                            .title(R.string.app_name)
+                            .content(R.string.app_name)
+                            .positiveText("Yes")
+                            .negativeText("No")
+                            .onAny(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(MaterialDialog dialog, DialogAction which) {
+
+                                    if (which == DialogAction.NEGATIVE){
 
 
-                new MaterialDialog.Builder(DetailView.this)
-                        .title(R.string.app_name)
-                        .content(R.string.app_name)
-                        .positiveText("Yes")
-                        .negativeText("No")
-                        .onAny(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    }else{
 
-                                 if (which == DialogAction.NEGATIVE){
+//();
+                                    }
+                                }
+                            })
+                            .show();
 
-                                     Toast.makeText(DetailView.this,
-                                             "Neagative", Toast.LENGTH_LONG).show();
-                                 }else{
+                } else {
 
-                                     Toast.makeText(DetailView.this,
-                                             "Positive", Toast.LENGTH_LONG).show();
-                                 }
-                            }
-                        })
-                        .show();
+                    Toast.makeText(DetailView.this,
+                            "Please login to make a Request", Toast.LENGTH_LONG).show();
 
 
 
-//                AlertDialog alertDialog = new AlertDialog.Builder(DetailView.this).create();
-//                alertDialog.setTitle("Alert");
-//                alertDialog.setMessage("Alert message to be shown");
-//                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "YES",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "NO",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                alertDialog.show();
+                }
+
+
+
+
+
+
             }
         });
 
@@ -171,11 +175,54 @@ public class DetailView extends AppCompatActivity {
         adapter = new detailViewAdapter(DetailView.this, json);
         recyclerView.setAdapter(adapter);
     }
+    String userID;
+
+private  void sendRequest(){
+
+
+loadProfileData(userID);
+
+
+}
 
 
     @Override
     protected void onResume() {
         super.onResume();
+
+
+    }
+
+    private void loadProfileData(String userID){
+
+        databaseProfile.child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                Log.i(String.valueOf(dataSnapshot.getValue()), "onDataChange: ");
+                // for(DataSnapshot gamesSanpshot : dataSnapshot.getChildren()){
+
+
+
+                ProfileDetails game = dataSnapshot.getValue(ProfileDetails.class);
+
+                profileDetails = game;
+
+
+                RequestDetails request = new RequestDetails(profileDetails.getId(),profileDetails.getName(),profileDetails.getMobileNumber(),profileDetails.getClubName());
+
+
+                databaseProfile.child(cliendId).child("Requests").setValue(request);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
     }
@@ -224,22 +271,14 @@ public class DetailView extends AppCompatActivity {
 
 
 
-   // @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        //getMenuInflater().inflate(R.menu.mymenu, menu);
-//        return super.onCreateOptionsMenu(menu);
-//
-//
-//    }
-
-    // handle button activities
+ 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.mybutton) {
             // do something here
-            shareTournament("http://s1.dmcdn.net/hxdt6/x720-qef.jpg","share");
+            shareTournament("http://s1.dmcdn.net/hxdt6/x720-qef.jpg","Hey check out my app at: https://play.google.com/store/apps/details?id=com.google.android.apps.plus");
         }
         return super.onOptionsItemSelected(item);
     }
