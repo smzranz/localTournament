@@ -103,7 +103,7 @@ public class MyTournaments extends AppCompatActivity {
 
                     String key = gamesSanpshot.getValue().toString();
                      Integer bb = productList.indexOf(key);
-Product myTournament = productList.get(bb);
+                Product myTournament = productList.get(bb);
                     sortedProductList.add(myTournament);
 
                 }

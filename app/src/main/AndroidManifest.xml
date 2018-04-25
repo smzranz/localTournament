@@ -26,18 +26,21 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashLayout">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity android:name=".AddTournamentActivity" />
         <activity android:name=".DetailView" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".MyTournaments"></activity>
+        <activity android:name=".MyTournaments" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
